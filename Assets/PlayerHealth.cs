@@ -1,38 +1,50 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+﻿using System.Collections;
 using UnityEngine;
+using TMPro; // 🔹 Додано для TextMeshPro
 
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private float maxHealth = 100;
-  
     [SerializeField] private float health = 100;
-    public bool isDead = false;
     public Animator anim;
-    private void  Start()
+
+    public bool isDead = false;
+
+    [Header("UI")]
+    public TextMeshProUGUI healthText; // 🔹 TMP текст для HP
+
+    void Start()
     {
         anim = GetComponent<Animator>();
+        UpdateHealthUI();
     }
 
     public void TakeDamage(float damage)
     {
-        health = health - damage;
-        if(health < 0)
-        {
+        if (isDead) return;
+
+        health -= damage;
+
+        if (health < 0)
             health = 0;
-        }
 
         if (health > maxHealth)
-        {
             health = maxHealth;
-        }
+
+        UpdateHealthUI();
+
         if (health == 0)
         {
             isDead = true;
             anim.SetTrigger("IsDead");
         }
     }
-  
 
+    private void UpdateHealthUI()
+    {
+        if (healthText != null)
+        {
+            healthText.text = "HP: " + Mathf.RoundToInt(health).ToString();
+        }
+    }
 }

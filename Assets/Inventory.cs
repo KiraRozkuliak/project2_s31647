@@ -1,16 +1,27 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Inventory : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public List<string> items = new List<string>();
+
+    [Header("UI")]
+    public TextMeshProUGUI itemText; // 🔹 Перетягни сюди TMP Text
+
+    public void AddItem(string itemName)
     {
+        items.Add(itemName);
+        Debug.Log("Added to inventory: " + itemName);
+        UpdateUI(); // 🔹 Оновлюємо текст
     }
 
-    // Update is called once per frame
-    void Update()
+    private void UpdateUI()
     {
+        if (itemText != null)
+        {
+            itemText.text = "Items: " + items.Count;
+        }
     }
 }
